@@ -1,9 +1,15 @@
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class WordFragmentizer {
+public class WordFragmentizer2 {
 
     private static Map<String, Integer> map = new HashMap<>();
+    private static Map<String, Integer> map1 = new HashMap<>();
+    private static Map<String, Integer> map2 = new HashMap<>();
+    private static Map<String, Integer> map3 = new HashMap<>();
 
     public static void main(String[] args) {
         try {
@@ -18,7 +24,6 @@ public class WordFragmentizer {
             e.printStackTrace();
         }
 
-        printResults();
     }
 
     private static void printResults() {
@@ -47,6 +52,7 @@ public class WordFragmentizer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        map.clear();
     }
 
     private static void printResults1() {
@@ -80,8 +86,9 @@ public class WordFragmentizer {
 
     private static void processWord(String word) {
         getLetterSegments(word, 1);
-        getLetterSegments(word, 2);
-        getLetterSegments(word, 3);
+        printResults();
+      /**  getLetterSegments(word, 2);
+        getLetterSegments(word,3); **/
     }
 
     private static void addToMap(String chunk) {
