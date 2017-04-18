@@ -13,26 +13,22 @@ public class WordFragmentizer2 {
 
     public static void main(String[] args) {
         try {
+            String line;
             BufferedReader reader = new BufferedReader(new FileReader("input/words"));
 
-            String line;
             while ((line = reader.readLine()) != null) {
                 processWord(line.toLowerCase());
             }
+            printResults();
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private static void printResults() {
-        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
-        list.sort((o1, o2) -> {
-            Integer o1WordSize = o1.getKey().length();
-            Integer o2WordSize = o2.getKey().length();
-            int sizeComparison = o2WordSize.compareTo(o1WordSize);
-            if (sizeComparison != 0) return sizeComparison;
+        List<Map.Entry<String, Integer>> list1 = new ArrayList<>(map1.entrySet());
+        list1.sort((o1, o2) -> {
 
             int valueComparison = o2.getValue().compareTo(o1.getValue());
             if (valueComparison != 0) return valueComparison;
@@ -40,10 +36,10 @@ public class WordFragmentizer2 {
             return o1.getKey().compareToIgnoreCase(o2.getKey());
         });
 
-        String filename = "output/results-" + System.currentTimeMillis() + ".csv";
+        String filename1 = "output/results-1-letter-" + System.currentTimeMillis() + ".csv";
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-            for (Map.Entry<String, Integer> entry : list) {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename1));
+            for (Map.Entry<String, Integer> entry : list1) {
                 writer.write(entry.getKey() + "," + entry.getValue());
                 writer.newLine();
             }
@@ -52,27 +48,20 @@ public class WordFragmentizer2 {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        map.clear();
-    }
+        map1.clear();
 
-    private static void printResults1() {
-        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
-        list.sort((o1, o2) -> {
-            Integer o1WordSize = o1.getKey().length();
-            Integer o2WordSize = o2.getKey().length();
-            int sizeComparison = o2WordSize.compareTo(o1WordSize);
-            if (sizeComparison != 0) return sizeComparison;
-
+        List<Map.Entry<String, Integer>> list2 = new ArrayList<>(map2.entrySet());
+        list2.sort((o1, o2) -> {
             int valueComparison = o2.getValue().compareTo(o1.getValue());
             if (valueComparison != 0) return valueComparison;
 
             return o1.getKey().compareToIgnoreCase(o2.getKey());
         });
 
-        String filename = "output/results-" + System.currentTimeMillis() + ".csv";
+        String filename = "output/results-2-letters-" + System.currentTimeMillis() + ".csv";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-            for (Map.Entry<String, Integer> entry : list) {
+            for (Map.Entry<String, Integer> entry : list2) {
                 writer.write(entry.getKey() + "," + entry.getValue());
                 writer.newLine();
             }
@@ -81,24 +70,56 @@ public class WordFragmentizer2 {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        map.clear();
+        map2.clear();
+
+        List<Map.Entry<String, Integer>> list3 = new ArrayList<>(map3.entrySet());
+        list3.sort((o1, o2) -> {
+
+            int valueComparison = o2.getValue().compareTo(o1.getValue());
+            if (valueComparison != 0) return valueComparison;
+
+            return o1.getKey().compareToIgnoreCase(o2.getKey());
+        });
+
+        String filename3 = "output/results-3-letters-" + System.currentTimeMillis() + ".csv";
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename3));
+            for (Map.Entry<String, Integer> entry : list3) {
+                writer.write(entry.getKey() + "," + entry.getValue());
+                writer.newLine();
+            }
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        map3.clear();
     }
 
     private static void processWord(String word) {
         getLetterSegments(word, 1);
-        printResults();
-      /**  getLetterSegments(word, 2);
-        getLetterSegments(word,3); **/
+        getLetterSegments(word, 2);
+        getLetterSegments(word, 3);
     }
 
-    private static void addToMap(String chunk) {
-        Integer value = map.get(chunk) == null ? 1 : map.get(chunk) + 1;
-        map.put(chunk, value);
+    private static void addToMap(String chunk, int size) {
+        if (size == 1) {
+            Integer value = map1.get(chunk) == null ? 1 : map1.get(chunk) + 1;
+            map1.put(chunk, value);
+        }
+        if (size == 2) {
+            Integer value = map2.get(chunk) == null ? 1 : map2.get(chunk) + 1;
+            map2.put(chunk, value);
+        }
+        if (size == 3) {
+            Integer value = map3.get(chunk) == null ? 1 : map3.get(chunk) + 1;
+            map3.put(chunk, value);
+        }
     }
 
     private static void getLetterSegments(String word, int size) {
         for (int i = 0; i < word.length() + 1 - size; i++) {
-            addToMap(word.substring(i, i + size));
+            addToMap(word.substring(i, i + size), size);
         }
     }
 }
