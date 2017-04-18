@@ -81,7 +81,7 @@ public class WordFragmentizer {
     private static void processWord(String word) {
         getLetterSegments(word, 1);
         getLetterSegments(word, 2);
-        getLetterSegments(word,3);
+        getLetterSegments(word, 3);
     }
 
     private static void addToMap(String chunk) {
